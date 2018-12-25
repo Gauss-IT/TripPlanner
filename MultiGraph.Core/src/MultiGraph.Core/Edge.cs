@@ -2,13 +2,13 @@
 
 namespace MultiGraph
 {
-    public class Edge<TEdgeValue, TVortexValue>
-        where TVortexValue : IEquatable<TVortexValue>
+    public class Edge<TEdgeValue, TVertexValue>
+        where TVertexValue : IEquatable<TVertexValue>
         where TEdgeValue : IEquatable<TEdgeValue>
     {
         public TEdgeValue Value { get; set; }
-        public Vortex<TVortexValue, TEdgeValue> FromVortex { get; set; }
-        public Vortex<TVortexValue, TEdgeValue> ToVortex { get; set; }
+        public Vertex<TVertexValue, TEdgeValue> FromVertex { get; set; }
+        public Vertex<TVertexValue, TEdgeValue> ToVertex { get; set; }
 
         #region Constructors
         public Edge() { }
@@ -16,16 +16,16 @@ namespace MultiGraph
         {
             Value = edgeValue;
         }
-        public Edge(TEdgeValue edgeValue, TVortexValue fromVortex, TVortexValue toVortex)
+        public Edge(TEdgeValue edgeValue, TVertexValue fromVertex, TVertexValue toVertex)
         {
             Value = edgeValue;
-            FromVortex = new Vortex<TVortexValue, TEdgeValue>(fromVortex);
-            ToVortex = new Vortex<TVortexValue, TEdgeValue>(fromVortex);
+            FromVertex = new Vertex<TVertexValue, TEdgeValue>(fromVertex);
+            ToVertex = new Vertex<TVertexValue, TEdgeValue>(fromVertex);
         }
-        public Edge(TVortexValue fromVortex, TVortexValue toVortex)
+        public Edge(TVertexValue fromVertex, TVertexValue toVertex)
         {
-            FromVortex = new Vortex<TVortexValue, TEdgeValue>(fromVortex);
-            ToVortex = new Vortex<TVortexValue, TEdgeValue>(fromVortex);
+            FromVertex = new Vertex<TVertexValue, TEdgeValue>(fromVertex);
+            ToVertex = new Vertex<TVertexValue, TEdgeValue>(fromVertex);
         }
         #endregion
     }

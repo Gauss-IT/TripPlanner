@@ -4,74 +4,74 @@ using System.Linq;
 
 namespace MultiGraph
 {
-    public class MultiGraph<TVortexValue, TEdgeValue>
-        where TVortexValue : class, IEquatable<TVortexValue>
+    public class MultiGraph<TVertexValue, TEdgeValue>
+        where TVertexValue : class, IEquatable<TVertexValue>
         where TEdgeValue : class, IEquatable<TEdgeValue>
     {
-        public List<Vortex<TVortexValue, TEdgeValue>> Vertices { get; set; }
-        public List<Edge<TEdgeValue, TVortexValue>> Edges { get; set; }
+        public List<Vertex<TVertexValue, TEdgeValue>> Vertices { get; set; }
+        public List<Edge<TEdgeValue, TVertexValue>> Edges { get; set; }
 
-        public void AddEdge(Edge<TEdgeValue, TVortexValue> edge)
+        public void AddEdge(Edge<TEdgeValue, TVertexValue> edge)
         {
             if (edge == null)
                 throw new ArgumentNullException(nameof(edge), $"the parameter '{nameof(edge)}' must not be null");
 
-            if (edge.FromVortex == null)
-                throw new ArgumentNullException(nameof(edge), $"the parameter '{nameof(edge)}.{nameof(edge.FromVortex)}' must not be null");
+            if (edge.FromVertex == null)
+                throw new ArgumentNullException(nameof(edge), $"the parameter '{nameof(edge)}.{nameof(edge.FromVertex)}' must not be null");
 
-            if (edge.ToVortex == null)
-                throw new ArgumentNullException(nameof(edge), $"the parameter '{nameof(edge)}.{nameof(edge.ToVortex)}' must not be null");
+            if (edge.ToVertex == null)
+                throw new ArgumentNullException(nameof(edge), $"the parameter '{nameof(edge)}.{nameof(edge.ToVertex)}' must not be null");
 
-            var fromVortex = Vertices.FirstOrDefault(v => v.Value?.Equals(edge.FromVortex.Value) ?? false);
-            if (fromVortex == null)
+            var fromVertex = Vertices.FirstOrDefault(v => v.Value?.Equals(edge.FromVertex.Value) ?? false);
+            if (fromVertex == null)
             {
-                var vortex = new Vortex<TVortexValue, TEdgeValue>();
-                vortex.Value = edge.FromVortex.Value;
-                vortex.Edges.Add(edge);
-                Vertices.Add(vortex);
+                var vertex = new Vertex<TVertexValue, TEdgeValue>();
+                vertex.Value = edge.FromVertex.Value;
+                vertex.Edges.Add(edge);
+                Vertices.Add(vertex);
             }
             else
             {
-                edge.FromVortex = fromVortex;
-                fromVortex.Edges.Add(edge);
-                Vertices.Add(edge.FromVortex);
+                edge.FromVertex = fromVertex;
+                fromVertex.Edges.Add(edge);
+                Vertices.Add(edge.FromVertex);
             }
-            var toVortex = Vertices.FirstOrDefault(v => v.Value?.Equals(edge.ToVortex) ?? false);
-            if (toVortex == null)
+            var toVertex = Vertices.FirstOrDefault(v => v.Value?.Equals(edge.ToVertex) ?? false);
+            if (toVertex == null)
             {
-                var vortex = new Vortex<TVortexValue, TEdgeValue>();
-                vortex.Value = edge.ToVortex.Value;
-                vortex.Edges.Add(edge);
-                Vertices.Add(vortex);
+                var vertex = new Vertex<TVertexValue, TEdgeValue>();
+                vertex.Value = edge.ToVertex.Value;
+                vertex.Edges.Add(edge);
+                Vertices.Add(vertex);
             }
             else
             {
-                edge.ToVortex = toVortex;
-                toVortex.Edges.Add(edge);
-                Vertices.Add(edge.ToVortex);
+                edge.ToVertex = toVertex;
+                toVertex.Edges.Add(edge);
+                Vertices.Add(edge.ToVertex);
             }
         }
 
         #region Constructors
         public MultiGraph()
         {
-            Vertices = new List<Vortex<TVortexValue, TEdgeValue>>();
-            Edges = new List<Edge<TEdgeValue, TVortexValue>>();
+            Vertices = new List<Vertex<TVertexValue, TEdgeValue>>();
+            Edges = new List<Edge<TEdgeValue, TVertexValue>>();
         }
-        public MultiGraph(IEnumerable<Vortex<TVortexValue, TEdgeValue>> vertices)
+        public MultiGraph(IEnumerable<Vertex<TVertexValue, TEdgeValue>> vertices)
         {
-            Vertices = new List<Vortex<TVortexValue, TEdgeValue>>(vertices);
-            Edges = new List<Edge<TEdgeValue, TVortexValue>>();
+            Vertices = new List<Vertex<TVertexValue, TEdgeValue>>(vertices);
+            Edges = new List<Edge<TEdgeValue, TVertexValue>>();
         }
-        public MultiGraph(IEnumerable<Edge<TEdgeValue, TVortexValue>> edges)
+        public MultiGraph(IEnumerable<Edge<TEdgeValue, TVertexValue>> edges)
         {
-            Vertices = new List<Vortex<TVortexValue, TEdgeValue>>();
-            Edges = new List<Edge<TEdgeValue, TVortexValue>>(edges);
+            Vertices = new List<Vertex<TVertexValue, TEdgeValue>>();
+            Edges = new List<Edge<TEdgeValue, TVertexValue>>(edges);
         }
-        public MultiGraph(IEnumerable<Vortex<TVortexValue, TEdgeValue>> vertices, IEnumerable<Edge<TEdgeValue, TVortexValue>> edges)
+        public MultiGraph(IEnumerable<Vertex<TVertexValue, TEdgeValue>> vertices, IEnumerable<Edge<TEdgeValue, TVertexValue>> edges)
         {
-            Vertices = new List<Vortex<TVortexValue, TEdgeValue>>(vertices);
-            Edges = new List<Edge<TEdgeValue, TVortexValue>>(edges);
+            Vertices = new List<Vertex<TVertexValue, TEdgeValue>>(vertices);
+            Edges = new List<Edge<TEdgeValue, TVertexValue>>(edges);
         }
         #endregion
     }
