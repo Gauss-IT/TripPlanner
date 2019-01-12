@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\TripPlanner\TripPlanner.csproj" />
     <ProjectReference Include="..\MultiGraph.Core\MultiGraph.Core.csproj" />
   </ItemGroup>
 
