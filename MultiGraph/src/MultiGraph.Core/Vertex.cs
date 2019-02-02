@@ -1,11 +1,12 @@
-﻿using System;
+﻿using MultiGraph.Core;
+using System;
 using System.Collections.Generic;
 
 namespace MultiGraph
 {
     public class Vertex<TVertexValue, TEdgeValue>
-        where TVertexValue : IEquatable<TVertexValue>
-        where TEdgeValue : IEquatable<TEdgeValue>
+        where TVertexValue : IVertex
+        where TEdgeValue : IEdge
     {
         public TVertexValue Value { get; set; }
         public List<Edge<TEdgeValue, TVertexValue>> Edges { get; set; }

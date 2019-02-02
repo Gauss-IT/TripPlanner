@@ -1,17 +1,16 @@
-﻿using System;
+﻿using MultiGraph.Core;
+using System;
 
 namespace MultiGraph.DemoConsole
 {
-    public class Station : IEquatable<Station>
+    public class Station : IVertex
     {
+        public Guid Id { get; }
         public int Value { get; set; }
 
-        public bool Equals(Station other)
-        {
-            if (other == null)
-                return false;
-
-            return Value == other.Value;
-        }
+        #region Constructors
+        public Station() => Id = Guid.NewGuid();
+        public Station(Guid id) => Id = id; 
+        #endregion
     }
 }
