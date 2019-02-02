@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace MultiGraph
 {
-    public class MultiGraph<TVertexValue, TEdgeValue>
+    public class MultiGraph<TVertexValue, TEdgeValue> : IGhraph<TVertexValue, TEdgeValue>
         where TVertexValue : class, IVertex
         where TEdgeValue : class, IEdge
     {
@@ -51,6 +51,9 @@ namespace MultiGraph
                 toVertex.Edges.Add(edge);
                 Vertices.Add(edge.ToVertex);
             }
+        }
+        public void AddVertex(Vertex<TVertexValue, TEdgeValue> vertex)
+        {
         }
 
         #region Constructors
