@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace MultiGraph
 {
-    public class MultiGraph<TVertexValue, TEdgeValue> : IGhraph<TVertexValue, TEdgeValue>
+    public class MultiGraph<TVertexValue, TEdgeValue> : IGraph<TVertexValue, TEdgeValue>
         where TVertexValue : class, IVertex
         where TEdgeValue : class, IEdge
     {

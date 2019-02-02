@@ -1,6 +1,6 @@
 ﻿namespace MultiGraph.Core
 {
-    public interface IGhraph<TVertexValue, TEdgeValue>
+    public interface IGraph<TVertexValue, TEdgeValue>
         where TVertexValue : class, IVertex
         where TEdgeValue : class, IEdge
     {
