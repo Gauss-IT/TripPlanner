@@ -1,5 +1,8 @@
 ﻿using DotNetGraph;
+using MultiGraph.Core;
 using System;
+using System.Drawing;
+using System.IO;
 
 namespace MultiGraph.DemoConsoles
 {
@@ -37,9 +40,10 @@ namespace MultiGraph.DemoConsoles
             graph.Add(edge6);
             graph.Add(edge7);
 
-            var dot = graph.Compile();
-            Console.WriteLine(dot);
-
+            Console.WriteLine(graph.Compile());
+            graph.SaveToDotFile("graph.dot");
+            graph.ToPngImage().Save("graph.png");
+            graph.SaveToSvg("graph.svg");
             #region useless
             //var edges = new List<Edge<Route, Station>>()
             //{
