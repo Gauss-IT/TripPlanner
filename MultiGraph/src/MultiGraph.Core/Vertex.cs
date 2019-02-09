@@ -1,6 +1,6 @@
 ﻿using MultiGraph.Core;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MultiGraph
 {
@@ -26,5 +26,10 @@ namespace MultiGraph
             Edges = new List<Edge<TEdgeValue, TVertexValue>>();
         }
         #endregion
+
+        public List<Vertex<TVertexValue, TEdgeValue>> GetNeighbors()
+        {
+            return Edges.Where(x => x.FromVertex == this).Select(x=> x.ToVertex).ToList();
+        }
     }
 }
