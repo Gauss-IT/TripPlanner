@@ -8,10 +8,9 @@ namespace MultiGraph.Core
         where TVertexValue : class, IVertex
         where TEdgeValue : class, IEdge 
     {
-        /// </inheritdocs>
+        /// <inheritdoc/>
         public List<Vertex<TVertexValue, TEdgeValue>> BreadthFirstSearch(IGraph<TVertexValue, TEdgeValue> graph,
-            Vertex<TVertexValue, TEdgeValue> start, Vertex<TVertexValue, TEdgeValue> end,
-            Func<Edge<TEdgeValue, TVertexValue>, double> costFunction)
+            Vertex<TVertexValue, TEdgeValue> start)
         {
             var visited = new List<Vertex<TVertexValue, TEdgeValue>>();
 
@@ -38,16 +37,55 @@ namespace MultiGraph.Core
             return visited;
         }
 
-        /// </inheritdocs>
+        /// <inheritdoc/>
         public List<Vertex<TVertexValue, TEdgeValue>> DepthFirstSearch(IGraph<TVertexValue, TEdgeValue> graph,
-            Vertex<TVertexValue, TEdgeValue> start, Vertex<TVertexValue, TEdgeValue> end,
-            Func<Edge<TEdgeValue, TVertexValue>, double> costFunction)
+            Vertex<TVertexValue, TEdgeValue> start)
         {
-            throw new NotImplementedException();
+            var visited = new List<Vertex<TVertexValue, TEdgeValue>>();
+
+            if (!graph.Vertices.Contains(start))
+                return new List<Vertex<TVertexValue, TEdgeValue>>();
+
+            var stack = new Stack<Vertex<TVertexValue, TEdgeValue>>();
+            stack.Push(start);
+
+            while (stack.Count > 0)
+            {
+                var vertex = stack.Pop();
+
+                if (visited.Contains(vertex))
+                    continue;
+
+                visited.Add(vertex);
+
+                foreach (var neighbor in vertex.GetNeighbors())
+                    if (!visited.Contains(neighbor))
+                        stack.Push(neighbor);
+            }
+
+            return visited;
         }
 
-        /// </inheritdocs>
-        public List<Vertex<TVertexValue, TEdgeValue>> ShortestPath(IGraph<TVertexValue, TEdgeValue> graph,
+        /// <inheritdoc/>
+        public double GetPathCost(List<Edge<TEdgeValue, TVertexValue>> path,
+            Func<Edge<TEdgeValue, TVertexValue>, double> costFunction)
+        {
+            var distance = 0.0;
+            if (path.Count == 0)
+                return distance;
+
+            for (var i = 0; i < path.Count; i++)
+            {
+                if (i < path.Count - 1 && path[i].ToVertex != path[i + 1].FromVertex)
+                    throw new ArgumentException("Path is not connected!");
+
+                distance += costFunction(path[i]);
+            }
+            return distance;
+        }
+
+        /// <inheritdoc/>
+        public Dictionary<Vertex<TVertexValue, TEdgeValue>, List<Vertex<TVertexValue, TEdgeValue>>> ShortestPaths(IGraph<TVertexValue, TEdgeValue> graph,
             Vertex<TVertexValue, TEdgeValue> start, Vertex<TVertexValue, TEdgeValue> end,
             Func<Edge<TEdgeValue, TVertexValue>, double> costFunction)
         {
