@@ -2,11 +2,11 @@
 
 namespace MultiGraph.Core
 {
-    public interface IGraph<TV, TE> : IGraph<TV, IVertex<TV>, TE, IEdge<TE, TV>> { }
+    public interface IGraph<TV, TE> : IGraph<TV, IVertex<TV>, TE, IEdge<TE, IVertex<TV>>> { }
 
     public interface IGraph<TV,TVertex, TE, TEdge>
         where TVertex : IVertex<TV>
-        where TEdge : IEdge<TE, TV>
+        where TEdge : IEdge<TE, TVertex>
     {
         /// <summary>
         /// Vertices of the graph

@@ -9,9 +9,11 @@ namespace MultiGraph.Tests
         [TestMethod]
         public void EdgeInitializationTest()
         {
-            var edgeValue = new Edge<int, int>();
-            var edge = new Edge<int, int>(edgeValue.Value);
+            var edgeValue = 5;
+            var edge = new Edge<int, int>(edgeValue);
             Assert.AreEqual(edge.Value, edgeValue);
+            Assert.IsNotNull(edge.FromVertex);
+            Assert.IsNotNull(edge.ToVertex);
         }
     }
 }

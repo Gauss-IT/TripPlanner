@@ -4,19 +4,24 @@ using MultiGraph.Core.Interfaces;
 
 namespace MultiGraph.Core
 {
-    public class GraphAlgorithms<TV, TE> : IGraphAlgorithms<TV, TE>
+    public class GraphAlgorithms<TV, TVertex, TE, TEdge> 
+        : IGraphAlgorithms<TV, TVertex, TE, TEdge>
         where TV : new()
         where TE : new()
+        where TVertex : IVertex<TV>
+        where TEdge : IEdge<TE, TVertex>
     {
+        
         /// <inheritdoc/>
-        public List<IVertex<TV>> BreadthFirstSearch(IGraph<TV, TE> graph, IVertex<TV> start)
+        public List<TVertex> BreadthFirstSearch(IGraph<TV, TVertex, TE, TEdge> graph,
+            TVertex start)
         {
-            var visited = new List<IVertex<TV>>();
+            var visited = new List<TVertex>();
 
             if (!graph.Vertices.Contains(start))
-                return new List<IVertex<TV>>();
+                return new List<TVertex>();
 
-            var queue = new Queue<IVertex<TV>>();
+            var queue = new Queue<TVertex>();
             queue.Enqueue(start);
 
             while (queue.Count > 0)
@@ -37,14 +42,15 @@ namespace MultiGraph.Core
         }
 
         /// <inheritdoc/>
-        public List<IVertex<TV>> DepthFirstSearch(IGraph<TV, TE> graph, IVertex<TV> start)
+        public List<TVertex> DepthFirstSearch(IGraph<TV, TVertex, TE, TEdge> graph, 
+            TVertex start)
         {
-            var visited = new List<IVertex<TV>>();
+            var visited = new List<TVertex>();
 
             if (!graph.Vertices.Contains(start))
-                return new List<IVertex<TV>>();
+                return new List<TVertex>();
 
-            var stack = new Stack<IVertex<TV>>();
+            var stack = new Stack<TVertex>();
             stack.Push(start);
 
             while (stack.Count > 0)
@@ -65,7 +71,7 @@ namespace MultiGraph.Core
         }
 
         /// <inheritdoc/>
-        public double GetPathCost(List<IEdge<TE, TV>> path, Func<IEdge<TE, TV>, double> costFunction)
+        public double GetPathCost(List<TEdge> path, Func<TEdge, double> costFunction)
         {
             var distance = 0.0;
             if (path.Count == 0)
@@ -73,7 +79,7 @@ namespace MultiGraph.Core
 
             for (var i = 0; i < path.Count; i++)
             {
-                if (i < path.Count - 1 && path[i].ToVertex != path[i + 1].FromVertex)
+                if (i < path.Count - 1 && path[i].ToVertex.Id != path[i + 1].FromVertex.Id)
                     throw new ArgumentException("Path is not connected!");
 
                 distance += costFunction(path[i]);
@@ -82,9 +88,8 @@ namespace MultiGraph.Core
         }
 
         /// <inheritdoc/>
-        public Dictionary<IVertex<TV>, List<IVertex<TV>>> ShortestPaths(IGraph<TV, TE> graph,
-            IVertex<TV> start, IVertex<TV> end,
-            Func<IEdge<TE, TV>, double> costFunction)
+        public Dictionary<TVertex, List<TVertex>> ShortestPaths(IGraph<TV, TVertex, TE, TEdge> graph,
+            TVertex start, TVertex end, Func<TEdge, double> costFunction)
         {
             throw new NotImplementedException();
         }

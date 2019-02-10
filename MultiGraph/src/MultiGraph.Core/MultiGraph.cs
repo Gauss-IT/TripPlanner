@@ -3,14 +3,14 @@ using System.Linq;
 
 namespace MultiGraph.Core
 {
-    public class MultiGraph<TV, TE> : IGraph<TV, Vertex<TV>, TE, Edge<TE,TV>>
+    public class MultiGraph<TV, TE> : IGraph<TV, Vertex<TV>, TE, Edge<TE, Vertex<TV>>>
         where TV : new()
         where TE : new()
     {
         public List<Vertex<TV>> Vertices { get; set; }
-        public List<Edge<TE, TV>> Edges { get; set; }
+        public List<Edge<TE, Vertex<TV>>> Edges { get; set; }
 
-        public void AddEdge(Edge<TE, TV> edge)
+        public void AddEdge(Edge<TE, Vertex<TV>> edge)
         {
             //if (edge == null)
             //    throw new ArgumentNullException(nameof(edge), $"the parameter '{nameof(edge)}' must not be null");
@@ -68,22 +68,22 @@ namespace MultiGraph.Core
         public MultiGraph()
         {
             Vertices = new List<Vertex<TV>>();
-            Edges = new List<Edge<TE, TV>>();
+            Edges = new List<Edge<TE, Vertex<TV>>>();
         }
         public MultiGraph(IEnumerable<Vertex<TV>> vertices)
         {
             Vertices = new List<Vertex<TV>>(vertices);
-            Edges = new List<Edge<TE, TV>>();
+            Edges = new List<Edge<TE, Vertex<TV>>>();
         }
-        public MultiGraph(IEnumerable<Edge<TE, TV>> edges)
+        public MultiGraph(IEnumerable<Edge<TE, Vertex<TV>>> edges)
         {
             Vertices = new List<Vertex<TV>>();
-            Edges = new List<Edge<TE, TV>>(edges);
+            Edges = new List<Edge<TE, Vertex<TV>>>(edges);
         }
-        public MultiGraph(IEnumerable<Vertex<TV>> vertices, IEnumerable<Edge<TE, TV>> edges)
+        public MultiGraph(IEnumerable<Vertex<TV>> vertices, IEnumerable<Edge<TE, Vertex<TV>>> edges)
         {
             Vertices = new List<Vertex<TV>>(vertices);
-            Edges = new List<Edge<TE, TV>>(edges);
+            Edges = new List<Edge<TE, Vertex<TV>>>(edges);
         }
         #endregion
     }
