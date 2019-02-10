@@ -1,35 +1,26 @@
 ﻿using MultiGraph.Core;
-using System.Collections.Generic;
-using System.Linq;
+using MultiGraph.Core.IdManagers;
 
 namespace MultiGraph
 {
-    public class Vertex<TVertexValue, TEdgeValue>
-        where TVertexValue : IVertex
-        where TEdgeValue : IEdge
+    public class Vertex<TV> : IVertex<TV>
+       where TV : new()
     {
-        public TVertexValue Value { get; set; }
-        public List<Edge<TEdgeValue, TVertexValue>> Edges { get; set; }
+        public TV Value { get; set; }
+
+        public int Id { get; private set; }
 
         #region Constructors
         public Vertex()
         {
-            Edges = new List<Edge<TEdgeValue, TVertexValue>>();
+            Id = VertexIdManager.GetNewVertexId();
+            Value = new TV();
         }
-        public Vertex(IEnumerable<Edge<TEdgeValue, TVertexValue>> edges)
+        
+        public Vertex(TV value): this()
         {
-            Edges = new List<Edge<TEdgeValue, TVertexValue>>(edges);
-        }
-        public Vertex(TVertexValue vertexValue)
-        {
-            Value = vertexValue;
-            Edges = new List<Edge<TEdgeValue, TVertexValue>>();
+            Value = value;
         }
         #endregion
-
-        public List<Vertex<TVertexValue, TEdgeValue>> GetNeighbors()
-        {
-            return Edges.Where(x => x.FromVertex == this).Select(x=> x.ToVertex).ToList();
-        }
     }
 }

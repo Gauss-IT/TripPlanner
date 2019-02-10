@@ -1,9 +1,8 @@
-﻿using System;
-
-namespace MultiGraph.Core
+﻿namespace MultiGraph.Core
 {
-    public interface IVertex
+    public interface IVertex<T>
     {
-        Guid Id { get; }
+        int Id { get; }
+        T Value { get; set; }
     }
 }

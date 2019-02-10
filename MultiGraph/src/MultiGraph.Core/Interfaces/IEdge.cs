@@ -1,9 +1,10 @@
-﻿using System;
-
-namespace MultiGraph.Core
+﻿namespace MultiGraph.Core
 {
-    public interface IEdge
+    public interface IEdge<TEdge, TVertex>
     {
-        Guid Id { get; }
+        int Id { get; }
+        TEdge Value { get; set; }
+        IVertex<TVertex> FromVertex { get; }
+        IVertex<TVertex> ToVertex { get; }
     }
 }

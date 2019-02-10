@@ -9,26 +9,16 @@ namespace MultiGraph.Tests
         [TestMethod]
         public void VertexInitializationTest()
         {
-            var vertex = new Vertex<IVertex, IEdge>();
-            Assert.IsNotNull(vertex.Edges);
+            var vertex = new Vertex<int>();
+            Assert.IsNotNull(vertex.Id);
         }
 
         [TestMethod]
         public void VertexInitializationWithValueTest()
         {
-            var vertex = new Vertex<IVertex, IEdge>();
-            var secondVertex = new Vertex<IVertex, IEdge>(vertex.Value);
-            Assert.IsNotNull(vertex.Edges);
+            var vertex = new Vertex<int>();
+            var secondVertex = new Vertex<int>(vertex.Value);
             Assert.AreEqual(vertex.Value, secondVertex.Value);
-        }
-        [TestMethod]
-        public void VertexInitializationWithListValueTest()
-        {
-            var vertex = new Vertex<IVertex, IEdge>();
-            var secondVertex = new Vertex<IVertex, IEdge>(vertex.Value);
-            Assert.IsNotNull(vertex.Edges);
-            Assert.AreEqual(vertex.Value, secondVertex.Value);
-            
         }
     }
 }

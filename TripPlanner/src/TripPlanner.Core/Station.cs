@@ -1,16 +1,11 @@
-﻿using MultiGraph.Core;
-using System;
-
-namespace MultiGraph.DemoConsole
+﻿namespace MultiGraph.DemoConsole
 {
-    public class Station : IVertex
+    public class Station
     {
-        public Guid Id { get; }
         public int Value { get; set; }
 
         #region Constructors
-        public Station() => Id = Guid.NewGuid();
-        public Station(Guid id) => Id = id; 
+        public Station() { }
         #endregion
     }
 }

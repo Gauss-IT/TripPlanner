@@ -10,7 +10,7 @@ namespace MultiGraph.Tests
         public void EdgeInitializationTest()
         {
             var edgeValue = new DummyEdge();
-            var edge = new Edge<IEdge,IVertex>(edgeValue);
+            var edge = new Edge<DummyEdge, DummyVertex>(edgeValue);
             Assert.AreEqual(edge.Value, edgeValue);
         }
     }

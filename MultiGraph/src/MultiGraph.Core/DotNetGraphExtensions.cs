@@ -11,26 +11,23 @@ namespace MultiGraph.Core
 {
     public static class DotNetGraphExtensions
     {
-        public static DotGraph ToDotNetGraph<TVertexValue, TEdgeValue>(
-            this MultiGraph<TVertexValue, TEdgeValue> graph, string name)
-            where TVertexValue: class, IVertex
-            where TEdgeValue: class, IEdge
-        {
-            var vertices = new Dictionary<Guid, DotNode>(graph.Vertices.Count);
-            var edges = new Dictionary<Guid, DotArrow>(graph.Edges.Count);
+        public static DotGraph ToDotNetGraph<TV, TE>(this IGraph<TV, TE> graph, string name)
+        { 
+            var vertices = new Dictionary<int, DotNode>(graph.Vertices.Count);
+            var edges = new Dictionary<int, DotArrow>(graph.Edges.Count);
             var result = new DotGraph(name);
 
             foreach (var vertex in graph.Vertices)
             {
-                var node = new DotNode(vertex.Value.Id.ToString());
-                vertices.Add(vertex.Value.Id, node);
+                var node = new DotNode(vertex.Id.ToString());
+                vertices.Add(vertex.Id, node);
                 result.Add(node);
             }
 
             foreach (var edge in graph.Edges)
             {
-                var arrow = new DotArrow(edge.FromVertex.Value.Id.ToString(), edge.ToVertex.Value.Id.ToString());
-                edges.Add(edge.Value.Id, arrow);
+                var arrow = new DotArrow(edge.FromVertex.Id.ToString(), edge.ToVertex.Id.ToString());
+                edges.Add(edge.Id, arrow);
                 result.Add(arrow);
             }
             return result;

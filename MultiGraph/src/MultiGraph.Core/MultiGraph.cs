@@ -1,81 +1,89 @@
-﻿using MultiGraph.Core;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace MultiGraph
+namespace MultiGraph.Core
 {
-    public class MultiGraph<TVertexValue, TEdgeValue> : IGraph<TVertexValue, TEdgeValue>
-        where TVertexValue : class, IVertex
-        where TEdgeValue : class, IEdge
+    public class MultiGraph<TV, TE> : IGraph<TV, Vertex<TV>, TE, Edge<TE,TV>>
+        where TV : new()
+        where TE : new()
     {
-        public List<Vertex<TVertexValue, TEdgeValue>> Vertices { get; set; }
-        public List<Edge<TEdgeValue, TVertexValue>> Edges { get; set; }
+        public List<Vertex<TV>> Vertices { get; set; }
+        public List<Edge<TE, TV>> Edges { get; set; }
 
-        public void AddEdge(Edge<TEdgeValue, TVertexValue> edge)
+        public void AddEdge(Edge<TE, TV> edge)
         {
-            if (edge == null)
-                throw new ArgumentNullException(nameof(edge), $"the parameter '{nameof(edge)}' must not be null");
+            //if (edge == null)
+            //    throw new ArgumentNullException(nameof(edge), $"the parameter '{nameof(edge)}' must not be null");
 
-            if (edge.FromVertex == null)
-                throw new ArgumentNullException(nameof(edge), $"the parameter '{nameof(edge)}.{nameof(edge.FromVertex)}' must not be null");
+            //if (edge.FromVertex == null)
+            //    throw new ArgumentNullException(nameof(edge), $"the parameter '{nameof(edge)}.{nameof(edge.FromVertex)}' must not be null");
 
-            if (edge.ToVertex == null)
-                throw new ArgumentNullException(nameof(edge), $"the parameter '{nameof(edge)}.{nameof(edge.ToVertex)}' must not be null");
+            //if (edge.ToVertex == null)
+            //    throw new ArgumentNullException(nameof(edge), $"the parameter '{nameof(edge)}.{nameof(edge.ToVertex)}' must not be null");
 
-            var fromVertex = Vertices.FirstOrDefault(v => v.Value?.Equals(edge.FromVertex.Value) ?? false);
-            if (fromVertex == null)
-            {
-                var vertex = new Vertex<TVertexValue, TEdgeValue>();
-                vertex.Value = edge.FromVertex.Value;
-                vertex.Edges.Add(edge);
-                Vertices.Add(vertex);
-            }
-            else
-            {
-                edge.FromVertex = fromVertex;
-                fromVertex.Edges.Add(edge);
-                Vertices.Add(edge.FromVertex);
-            }
-            var toVertex = Vertices.FirstOrDefault(v => v.Value?.Equals(edge.ToVertex) ?? false);
-            if (toVertex == null)
-            {
-                var vertex = new Vertex<TVertexValue, TEdgeValue>();
-                vertex.Value = edge.ToVertex.Value;
-                vertex.Edges.Add(edge);
-                Vertices.Add(vertex);
-            }
-            else
-            {
-                edge.ToVertex = toVertex;
-                toVertex.Edges.Add(edge);
-                Vertices.Add(edge.ToVertex);
-            }
+            //var fromVertex = Vertices.FirstOrDefault(v => v.Value?.Equals(edge.FromVertex.Value) ?? false);
+            //if (fromVertex == null)
+            //{
+            //    var vertex = new Vertex<TV>();
+            //    vertex.Value = edge.FromVertex.Value;
+            //    Vertices.Add(vertex);
+            //}
+            //else
+            //{
+            //    edge.FromVertex = fromVertex;
+            //    fromVertex.Edges.Add(edge);
+            //    Vertices.Add(edge.FromVertex);
+            //}
+            //var toVertex = Vertices.FirstOrDefault(v => v.Value?.Equals(edge.ToVertex) ?? false);
+            //if (toVertex == null)
+            //{
+            //    var vertex = new Vertex<TV, TE>();
+            //    vertex.Value = edge.ToVertex.Value;
+            //    vertex.Edges.Add(edge);
+            //    Vertices.Add(vertex);
+            //}
+            //else
+            //{
+            //    edge.ToVertex = toVertex;
+            //    toVertex.Edges.Add(edge);
+            //    Vertices.Add(edge.ToVertex);
+            //}
         }
-        public void AddVertex(Vertex<TVertexValue, TEdgeValue> vertex)
+
+        public void AddVertex(Vertex<TV> vertex)
         {
+        }
+
+        public List<Vertex<TV>> GetNeighbors(Vertex<TV> vertex)
+        {
+            return Edges
+                .Where(x => x.FromVertex == vertex)
+                .Select(x => x.ToVertex)
+                // Admir TODO: This casting has to be removed, and edges need to use generic vertex containers
+                .Cast<Vertex<TV>>()
+                .ToList();
         }
 
         #region Constructors
         public MultiGraph()
         {
-            Vertices = new List<Vertex<TVertexValue, TEdgeValue>>();
-            Edges = new List<Edge<TEdgeValue, TVertexValue>>();
+            Vertices = new List<Vertex<TV>>();
+            Edges = new List<Edge<TE, TV>>();
         }
-        public MultiGraph(IEnumerable<Vertex<TVertexValue, TEdgeValue>> vertices)
+        public MultiGraph(IEnumerable<Vertex<TV>> vertices)
         {
-            Vertices = new List<Vertex<TVertexValue, TEdgeValue>>(vertices);
-            Edges = new List<Edge<TEdgeValue, TVertexValue>>();
+            Vertices = new List<Vertex<TV>>(vertices);
+            Edges = new List<Edge<TE, TV>>();
         }
-        public MultiGraph(IEnumerable<Edge<TEdgeValue, TVertexValue>> edges)
+        public MultiGraph(IEnumerable<Edge<TE, TV>> edges)
         {
-            Vertices = new List<Vertex<TVertexValue, TEdgeValue>>();
-            Edges = new List<Edge<TEdgeValue, TVertexValue>>(edges);
+            Vertices = new List<Vertex<TV>>();
+            Edges = new List<Edge<TE, TV>>(edges);
         }
-        public MultiGraph(IEnumerable<Vertex<TVertexValue, TEdgeValue>> vertices, IEnumerable<Edge<TEdgeValue, TVertexValue>> edges)
+        public MultiGraph(IEnumerable<Vertex<TV>> vertices, IEnumerable<Edge<TE, TV>> edges)
         {
-            Vertices = new List<Vertex<TVertexValue, TEdgeValue>>(vertices);
-            Edges = new List<Edge<TEdgeValue, TVertexValue>>(edges);
+            Vertices = new List<Vertex<TV>>(vertices);
+            Edges = new List<Edge<TE, TV>>(edges);
         }
         #endregion
     }

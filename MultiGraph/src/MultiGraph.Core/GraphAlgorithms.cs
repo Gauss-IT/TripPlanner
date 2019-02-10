@@ -4,20 +4,19 @@ using MultiGraph.Core.Interfaces;
 
 namespace MultiGraph.Core
 {
-    public class GraphAlgorithms<TVertexValue, TEdgeValue> : IGraphAlgorithms<TVertexValue, TEdgeValue>
-        where TVertexValue : class, IVertex
-        where TEdgeValue : class, IEdge 
+    public class GraphAlgorithms<TV, TE> : IGraphAlgorithms<TV, TE>
+        where TV : new()
+        where TE : new()
     {
         /// <inheritdoc/>
-        public List<Vertex<TVertexValue, TEdgeValue>> BreadthFirstSearch(IGraph<TVertexValue, TEdgeValue> graph,
-            Vertex<TVertexValue, TEdgeValue> start)
+        public List<IVertex<TV>> BreadthFirstSearch(IGraph<TV, TE> graph, IVertex<TV> start)
         {
-            var visited = new List<Vertex<TVertexValue, TEdgeValue>>();
+            var visited = new List<IVertex<TV>>();
 
             if (!graph.Vertices.Contains(start))
-                return new List<Vertex<TVertexValue, TEdgeValue>>();
+                return new List<IVertex<TV>>();
 
-            var queue = new Queue<Vertex<TVertexValue, TEdgeValue>>();
+            var queue = new Queue<IVertex<TV>>();
             queue.Enqueue(start);
 
             while (queue.Count > 0)
@@ -29,7 +28,7 @@ namespace MultiGraph.Core
 
                 visited.Add(vertex);
 
-                foreach (var neighbor in vertex.GetNeighbors())
+                foreach (var neighbor in graph.GetNeighbors(vertex))
                     if (!visited.Contains(neighbor))
                         queue.Enqueue(neighbor);
             }
@@ -38,15 +37,14 @@ namespace MultiGraph.Core
         }
 
         /// <inheritdoc/>
-        public List<Vertex<TVertexValue, TEdgeValue>> DepthFirstSearch(IGraph<TVertexValue, TEdgeValue> graph,
-            Vertex<TVertexValue, TEdgeValue> start)
+        public List<IVertex<TV>> DepthFirstSearch(IGraph<TV, TE> graph, IVertex<TV> start)
         {
-            var visited = new List<Vertex<TVertexValue, TEdgeValue>>();
+            var visited = new List<IVertex<TV>>();
 
             if (!graph.Vertices.Contains(start))
-                return new List<Vertex<TVertexValue, TEdgeValue>>();
+                return new List<IVertex<TV>>();
 
-            var stack = new Stack<Vertex<TVertexValue, TEdgeValue>>();
+            var stack = new Stack<IVertex<TV>>();
             stack.Push(start);
 
             while (stack.Count > 0)
@@ -58,7 +56,7 @@ namespace MultiGraph.Core
 
                 visited.Add(vertex);
 
-                foreach (var neighbor in vertex.GetNeighbors())
+                foreach (var neighbor in graph.GetNeighbors(vertex))
                     if (!visited.Contains(neighbor))
                         stack.Push(neighbor);
             }
@@ -67,8 +65,7 @@ namespace MultiGraph.Core
         }
 
         /// <inheritdoc/>
-        public double GetPathCost(List<Edge<TEdgeValue, TVertexValue>> path,
-            Func<Edge<TEdgeValue, TVertexValue>, double> costFunction)
+        public double GetPathCost(List<IEdge<TE, TV>> path, Func<IEdge<TE, TV>, double> costFunction)
         {
             var distance = 0.0;
             if (path.Count == 0)
@@ -85,9 +82,9 @@ namespace MultiGraph.Core
         }
 
         /// <inheritdoc/>
-        public Dictionary<Vertex<TVertexValue, TEdgeValue>, List<Vertex<TVertexValue, TEdgeValue>>> ShortestPaths(IGraph<TVertexValue, TEdgeValue> graph,
-            Vertex<TVertexValue, TEdgeValue> start, Vertex<TVertexValue, TEdgeValue> end,
-            Func<Edge<TEdgeValue, TVertexValue>, double> costFunction)
+        public Dictionary<IVertex<TV>, List<IVertex<TV>>> ShortestPaths(IGraph<TV, TE> graph,
+            IVertex<TV> start, IVertex<TV> end,
+            Func<IEdge<TE, TV>, double> costFunction)
         {
             throw new NotImplementedException();
         }

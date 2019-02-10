@@ -1,27 +1,32 @@
 ﻿using MultiGraph.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MultiGraph.Tests
 {
-    public class DummyVertex : IVertex
+    public class DummyVertex : IVertex<int>
     {
-        public Guid Id { get; }
+        public int Id { get; }
+        public int Value { get; set; }
 
         public DummyVertex()
         {
-            Id = Guid.NewGuid();
+            Id = 0;
+            Value = 0;
         }
     }
 
-    public class DummyEdge : IEdge
+    public class DummyEdge : IEdge<int,int>
     {
-        public Guid Id { get; }
+        public int Id { get; private set; }
+
+        public int Value { get; set; }
+
+        public IVertex<int> FromVertex { get; set; }
+
+        public IVertex<int> ToVertex { get; set; }
 
         public DummyEdge()
         {
-            Id = Guid.NewGuid();
+            Id = 0;
         }
     }
 }

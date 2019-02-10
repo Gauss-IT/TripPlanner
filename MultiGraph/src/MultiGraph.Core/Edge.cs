@@ -1,31 +1,41 @@
 ﻿using MultiGraph.Core;
+using MultiGraph.Core.IdManagers;
 
 namespace MultiGraph
 {
-    public class Edge<TEdgeValue, TVertexValue>
-        where TVertexValue : IVertex
-        where TEdgeValue : IEdge
+    public class Edge<TE, TV> : IEdge<TE, TV>
+        where TV : new()
+        where TE : new()
     {
-        public TEdgeValue Value { get; set; }
-        public Vertex<TVertexValue, TEdgeValue> FromVertex { get; set; }
-        public Vertex<TVertexValue, TEdgeValue> ToVertex { get; set; }
+        public int Id { get; }
+        public TE Value { get; set; }
+        // Admir TODO: Make this a generic vertex container type
+        public IVertex<TV> FromVertex { get; private set; }
+        public IVertex<TV> ToVertex { get; private set; }
 
         #region Constructors
-        public Edge() { }
-        public Edge(TEdgeValue edgeValue)
+        public Edge()
+        {
+            Id = EdgeIdManager.GetNewEdgeId();
+        }
+
+        public Edge(TE edgeValue) : this()
         {
             Value = edgeValue;
+            FromVertex = new Vertex<TV>();
+            ToVertex = new Vertex<TV>();
         }
-        public Edge(TEdgeValue edgeValue, TVertexValue fromVertex, TVertexValue toVertex)
+        public Edge(TE edgeValue, Vertex<TV> fromVertex, Vertex<TV> toVertex) : this()
         {
             Value = edgeValue;
-            FromVertex = new Vertex<TVertexValue, TEdgeValue>(fromVertex);
-            ToVertex = new Vertex<TVertexValue, TEdgeValue>(fromVertex);
+            FromVertex = fromVertex;
+            ToVertex = toVertex;
         }
-        public Edge(TVertexValue fromVertex, TVertexValue toVertex)
+        public Edge(int id, Vertex<TV> fromVertex, Vertex<TV> toVertex) : this()
         {
-            FromVertex = new Vertex<TVertexValue, TEdgeValue>(fromVertex);
-            ToVertex = new Vertex<TVertexValue, TEdgeValue>(fromVertex);
+            Value = new TE();
+            FromVertex = fromVertex;
+            ToVertex = toVertex;
         }
         #endregion
     }
